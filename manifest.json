@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Super Board",
+  "description": "Personal Web Dashboard",
+  "version": "1.0",
+  "action": {
+    "default_icon": "logo512.png",
+    "default_title": "Super Board",
+    "default_popup": "popup.html"
+  },
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
