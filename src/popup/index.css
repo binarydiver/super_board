@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  margin: 0;
+  @apply bg-slate-900;
+  @apply p-2;
+  @apply m-0;
   min-width: 256px;
-  min-height: 256px;
-  padding: 0;
 }

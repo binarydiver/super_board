@@ -5,12 +5,13 @@
   "version": "1.0",
   "action": {
     "default_icon": "logo512.png",
-    "default_title": "Super Board"
+    "default_title": "Super Board",
+    "default_popup": "popup.html"
   },
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
   "background": {
     "service_worker": "service-worker.js"
   }
