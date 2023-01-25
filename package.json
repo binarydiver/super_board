@@ -19,6 +19,7 @@
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@svgr/webpack": "^6.5.1",
+    "@types/chrome": "^0.0.210",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",
     "@types/react-dev-utils": "^9.0.11",

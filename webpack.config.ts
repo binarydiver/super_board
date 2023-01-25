@@ -57,6 +57,7 @@ const paths = {
   appEntryNewTabJs: resolveApp("src/index"),
   appEntryPopupHtml: resolveApp("public/popup.html"),
   appEntryPopupJs: resolveApp("src/popup/index"),
+  appEntryServiceWorkerJs: resolveApp("src/service-worker"),
 };
 
 // Check if Tailwind config exists
@@ -186,6 +187,7 @@ const webpackConfig = (
   return {
     devtool: isEnvProduction ? false : "inline-source-map",
     entry: {
+      "service-worker": [paths.appEntryServiceWorkerJs],
       newTab: [paths.appEntryNewTabJs],
       popup: [paths.appEntryPopupJs],
     },
@@ -424,13 +426,23 @@ const webpackConfig = (
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
-      filename: isEnvProduction
-        ? "static/js/[name].[contenthash:8].js"
-        : "static/js/[name].js",
+      filename: (pathData, _) => {
+        if (pathData.chunk?.name === "service-worker") {
+          return "[name].js";
+        }
+        return isEnvProduction
+          ? "static/js/[name].[contenthash:8].js"
+          : "static/js/[name].js";
+      },
       // There are also additional JS chunk files if you use code splitting.
-      chunkFilename: isEnvProduction
-        ? "static/js/[name].[contenthash:8].chunk.js"
-        : "static/js/[name].chunk.js",
+      chunkFilename: (pathData, _) => {
+        if (pathData.chunk?.name === "service-worker") {
+          return "[name].chunk.js";
+        }
+        return isEnvProduction
+          ? "static/js/[name].[contenthash:8].chunk.js"
+          : "static/js/[name].chunk.js";
+      },
       assetModuleFilename: "static/media/[name].[hash][ext]",
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.

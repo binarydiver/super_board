@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@pmmmwh/react-refresh-webpack-plugin': ^0.5.10
   '@svgr/webpack': ^6.5.1
+  '@types/chrome': ^0.0.210
   '@types/node': ^18.11.18
   '@types/react': ^18.0.27
   '@types/react-dev-utils': ^9.0.11
@@ -44,6 +45,7 @@ dependencies:
 devDependencies:
   '@pmmmwh/react-refresh-webpack-plugin': 0.5.10_3lg45jznfkaedc25egrbkruzdu
   '@svgr/webpack': 6.5.1
+  '@types/chrome': 0.0.210
   '@types/node': 18.11.18
   '@types/react': 18.0.27
   '@types/react-dev-utils': 9.0.11
@@ -1844,6 +1846,13 @@ packages:
       '@types/node': 18.11.18
     dev: true
 
+  /@types/chrome/0.0.210:
+    resolution: {integrity: sha512-VSjQu1k6a/rAfuqR1Gi/oxHZj4+t6+LG+GobNI3ZWI6DQ+fmphNSF6TrLHG6BYK2bXc9Gb4c1uXFKRRVLaGl5Q==}
+    dependencies:
+      '@types/filesystem': 0.0.32
+      '@types/har-format': 1.2.10
+    dev: true
+
   /@types/clean-css/4.2.6:
     resolution: {integrity: sha512-Ze1tf+LnGPmG6hBFMi0B4TEB0mhF7EiMM5oyjLDNPE9hxrPU0W+5+bHvO+eFPA+bt0iC1zkQMoU/iGdRVjcRbw==}
     dependencies:
@@ -1901,6 +1910,20 @@ packages:
       '@types/express-serve-static-core': 4.17.32
       '@types/qs': 6.9.7
       '@types/serve-static': 1.15.0
+    dev: true
+
+  /@types/filesystem/0.0.32:
+    resolution: {integrity: sha512-Yuf4jR5YYMR2DVgwuCiP11s0xuVRyPKmz8vo6HBY3CGdeMj8af93CFZX+T82+VD1+UqHOxTq31lO7MI7lepBtQ==}
+    dependencies:
+      '@types/filewriter': 0.0.29
+    dev: true
+
+  /@types/filewriter/0.0.29:
+    resolution: {integrity: sha512-BsPXH/irW0ht0Ji6iw/jJaK8Lj3FJemon2gvEqHKpCdDCeemHa+rI3WBGq5z7cDMZgoLjY40oninGxqk+8NzNQ==}
+    dev: true
+
+  /@types/har-format/1.2.10:
+    resolution: {integrity: sha512-o0J30wqycjF5miWDKYKKzzOU1ZTLuA42HZ4HE7/zqTOc/jTLdQ5NhYWvsRQo45Nfi1KHoRdNhteSI4BAxTF1Pg==}
     dev: true
 
   /@types/html-minifier-terser/6.1.0:
