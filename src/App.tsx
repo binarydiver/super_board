@@ -4,7 +4,7 @@ import logo from "./logo.svg";
 function App() {
   return (
     <>
-      <button className="bg-blue-500 py-4 px-8 rounded-lg">Test</button>
+      <button className="bg-blue-500 py-4 px-8 rounded-lg">+</button>
     </>
   );
 }

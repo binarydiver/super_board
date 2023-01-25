@@ -186,8 +186,8 @@ const webpackConfig = (
   return {
     devtool: isEnvProduction ? false : "inline-source-map",
     entry: {
-      newTab: paths.appEntryNewTabJs,
-      popup: paths.appEntryPopupJs,
+      newTab: [paths.appEntryNewTabJs],
+      popup: [paths.appEntryPopupJs],
     },
     module: {
       rules: [
@@ -426,7 +426,7 @@ const webpackConfig = (
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? "static/js/[name].[contenthash:8].js"
-        : "static/js/bundle.js",
+        : "static/js/[name].js",
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? "static/js/[name].[contenthash:8].chunk.js"
