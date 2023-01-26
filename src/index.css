@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .card {
+    background-color: theme("colors.slate.800");
+    border-radius: theme("borderRadius.sm");
+    border-width: theme("borderWidth.DEFAULT");
+    border-color: theme("colors.white");
+    padding: theme("spacing.4");
+    box-shadow: theme("boxShadow.xl");
+  }
+  /* ... */
+}
+
 body {
   @apply bg-slate-900;
   @apply p-2;
