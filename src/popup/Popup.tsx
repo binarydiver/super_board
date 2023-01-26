@@ -12,6 +12,8 @@ const Popup = () => {
   const [title, setTitle] = useState<string>();
   const [activeUrl, setActiveUrl] = useState<string>();
 
+  const isBuiltInUrl = activeUrl?.startsWith("edge://") || false;
+
   useEffect(() => {
     let queryOptions = { active: true };
     // `tab` will either be a `tabs.Tab` instance or `undefined`.
@@ -35,7 +37,7 @@ const Popup = () => {
     chrome.storage.local
       .set({ title, activeUrl })
       .then(() => {
-        console.log("Value is set to ", title);
+        console.log("Value is set to:", activeUrl);
       })
       .catch(console.error);
   };
@@ -55,23 +57,25 @@ const Popup = () => {
             htmlFor="title"
             className="block mb-2 text-sm font-medium text-white"
           >
-            Title
+            {isBuiltInUrl ? "Built-in url can't save!" : "Title"}
           </label>
           <input
             type="text"
             id="title"
-            className="bg-slate-800 border focus:ring-1 text-white text-sm rounded-sm block w-full p-2"
+            className="bg-slate-800 border disabled:cursor-not-allowed disabled:text-slate-500 enabled:focus:ring-1 text-white text-sm rounded-sm block w-full p-2"
             value={title}
             onChange={changeTitleInput}
             required
+            disabled={isBuiltInUrl}
           />
         </div>
       </form>
       <div className="p-2">
         <button
           type="button"
-          className="border focus:outline-none focus:ring-1 font-medium rounded-sm text-sm px-4 py-2 mr-2 mb-2 bg-gray-800 text-white border-gray-600 hover:bg-gray-700 hover:border-gray-600 focus:ring-gray-700 w-full"
+          className="border disabled:cursor-not-allowed disabled:text-slate-500 focus:outline-none focus:ring-1 font-medium rounded-sm text-sm px-4 py-2 mr-2 mb-2 bg-gray-800 text-white border-gray-600 enabled:hover:bg-gray-700 enabled:hover:border-gray-600 focus:ring-gray-700 w-full"
           onClick={clickSendButton}
+          disabled={isBuiltInUrl}
         >
           Save
         </button>
