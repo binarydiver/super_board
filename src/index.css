@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 body {
-  margin: 0;
-  padding: 0;
+  @apply bg-slate-900;
+  @apply p-2;
+  @apply m-0;
 }
