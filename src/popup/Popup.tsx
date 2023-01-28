@@ -11,7 +11,7 @@ const Popup = () => {
 
   const [title, setTitle] = useState<string>();
   const [activeUrl, setActiveUrl] = useState<string>();
-
+  const [favIconUrl, setFaviconUrl] = useState<string>();
   const isBuiltInUrl = activeUrl?.startsWith("edge://") || false;
 
   useEffect(() => {
@@ -29,15 +29,30 @@ const Popup = () => {
         if (activeUrl) {
           setActiveUrl(activeUrl);
         }
+
+        const favIconUrl = tabs[0].favIconUrl;
+        if (favIconUrl) {
+          setFaviconUrl(favIconUrl);
+        }
       })
       .catch(console.error);
   }, []);
 
   const clickSendButton = () => {
     chrome.storage.local
-      .set({ title, activeUrl })
-      .then(() => {
-        console.log("Value is set to:", activeUrl);
+      .get("lastIndex")
+      .then((result) => {
+        let id = 1;
+        if (result) {
+          id = result.lastIndex + 1;
+        }
+
+        chrome.storage.local
+          .set({ sites: [{ id, title, activeUrl, favIconUrl }] })
+          .then(() => {
+            console.log("Save:\n", { title, activeUrl, favIconUrl });
+          })
+          .catch(console.error);
       })
       .catch(console.error);
   };

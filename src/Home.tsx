@@ -1,6 +1,16 @@
+import { useEffect } from "react";
 import "./Home.css";
 
 const Home = () => {
+  useEffect(() => {
+    chrome.storage.local
+      .get("sites")
+      .then((result) => {
+        console.log("Result: ", result);
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <>
       <h1 className="text-white text-center text-4xl">Super Board</h1>
