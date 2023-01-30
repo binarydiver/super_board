@@ -28,15 +28,18 @@ const Home = () => {
       return null;
     }
 
-    console.log("31", sites);
+    console.log("31: ", sites);
 
     return (
       <>
         {sites.map((site, index) => {
           return (
-            <div className="card" key={index}>
-              <div className="divide-y divide-solid">{site.title}</div>
-              <div>{site.activeUrl}</div>
+            <div
+              className="card divide-y divide-solid divide-white text-white"
+              key={index}
+            >
+              <div className="py-2">{site.title}</div>
+              <div className="py-2">{site.activeUrl}</div>
             </div>
           );
         })}

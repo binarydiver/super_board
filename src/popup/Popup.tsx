@@ -41,16 +41,30 @@ const Popup = () => {
   const clickSendButton = () => {
     chrome.storage.local
       .get("lastIndex")
-      .then((result) => {
+      .then((localData) => {
         let id = 1;
-        if (result) {
-          id = result.lastIndex + 1;
+        if (localData) {
+          id = localData.lastIndex + 1;
+          chrome.storage.local.set({ lastIndex: id });
         }
 
         chrome.storage.local
-          .set({ sites: [{ id, title, activeUrl, favIconUrl }] })
-          .then(() => {
-            console.log("Save:\n", { title, activeUrl, favIconUrl });
+          .get(["sites"])
+          .then((localData) => {
+            let previousSites = [];
+            if (localData.sites) {
+              previousSites = localData.sites;
+            }
+            chrome.storage.local
+              .set({
+                sites: [...previousSites, { id, title, activeUrl, favIconUrl }],
+              })
+              .then(() => {
+                console.log("63: ", { title, activeUrl, favIconUrl });
+
+                window.close();
+              })
+              .catch(console.error);
           })
           .catch(console.error);
       })

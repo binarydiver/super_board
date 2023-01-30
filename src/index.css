@@ -8,7 +8,7 @@
     border-radius: theme("borderRadius.sm");
     border-width: theme("borderWidth.DEFAULT");
     border-color: theme("colors.white");
-    padding: theme("spacing.4");
+    padding: theme("spacing.2");
     box-shadow: theme("boxShadow.xl");
   }
   /* ... */
