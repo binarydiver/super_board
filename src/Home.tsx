@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Home.css";
-
-type Site = {
-  id: number;
-  title: string;
-  activeUrl: string;
-  favIconUrl: string;
-};
+import Site from "./types/site";
 
 const Home = () => {
   const [sites, setSites] = useState<Site[]>([]);
@@ -40,6 +34,7 @@ const Home = () => {
             >
               <div className="py-2">{site.title}</div>
               <div className="py-2">{site.activeUrl}</div>
+              <div className="py-2">description</div>
             </div>
           );
         })}
@@ -49,7 +44,7 @@ const Home = () => {
 
   return (
     <>
-      <h1 className="text-white text-center text-4xl">Super Board</h1>
+      {/* <h1 className="text-white text-center text-4xl">Super Board</h1> */}
       <div className="grid grid-cols-4 gap-4">
         <SiteCard />
       </div>
