@@ -3,14 +3,6 @@ import Tag from "../components/tag";
 import Site from "../types/site";
 
 const Popup = () => {
-  // chrome.action.onClicked.addListener((tab) => {
-  //   console.log("tab", tab.id);
-  //   chrome.action.setTitle({
-  //     tabId: tab.id,
-  //     title: "You are on tab:" + tab.id,
-  //   });
-  // });
-
   const [title, setTitle] = useState<string>();
   const [tags, setTags] = useState<string[]>([]);
   const [activeUrl, setActiveUrl] = useState<string>();
@@ -18,9 +10,7 @@ const Popup = () => {
   const isBuiltInUrl = activeUrl?.startsWith("edge://") || false;
 
   useEffect(() => {
-    let queryOptions = { active: true };
-    // `tab` will either be a `tabs.Tab` instance or `undefined`.
-
+    let queryOptions = { active: true, currentWindow: true };
     chrome.tabs
       .query(queryOptions)
       .then((tabs) => {
@@ -30,83 +20,79 @@ const Popup = () => {
           setFaviconUrl(favIconUrl);
         }
 
-        chrome.storage.local.get(["sites"]).then((localData) => {
-          if (localData.sites) {
-            const matchedSite = localData.sites.find((site: Site) => {
-              if (!activeUrl) {
-                return;
+        if (activeUrl) {
+          setActiveUrl(activeUrl);
+
+          chrome.bookmarks.create({ title: "_SUPER_BOARD" }).then((node) => {
+            chrome.bookmarks.search({ url: activeUrl }, (results) => {
+              if (results.length === 0) {
+                if (title) {
+                  setTitle(title);
+                }
               }
-              return site.activeUrl === btoa(activeUrl);
+
+              results.forEach((result) => {
+                if (result.title.startsWith(":SB:")) {
+                  const titleComponents = result.title.split(":SB:");
+                  setTitle(titleComponents[1]);
+                  if (titleComponents[2]) {
+                    setTags(titleComponents[2].split(","));
+                  }
+                }
+              });
             });
-
-            console.log("40:", title);
-
-            if (matchedSite) {
-              setTitle(matchedSite.title);
-              setFaviconUrl(matchedSite.favIconUrl);
-            } else {
-              if (title) {
-                setTitle(title);
-              }
-            }
-          }
-
-          if (localData.sites == null) {
-            if (title) {
-              setTitle(title);
-            }
-          }
-        });
+          });
+        }
       })
       .catch(console.error);
   }, []);
 
   const clickSaveButton = () => {
     chrome.bookmarks
-      .create({ title: "super_board" })
-      .then((_) => {})
-      .catch(console.error);
-
-    chrome.storage.local
-      .get(["sites"])
-      .then((localData) => {
-        let previousSites = [];
-        if (localData.sites) {
-          previousSites = localData.sites;
-        }
-        chrome.storage.local
-          .set({
-            sites: [
-              ...previousSites,
-              {
-                createAt: Date.now(),
-                title,
-                activeUrl: btoa(activeUrl!),
-                favIconUrl,
-              },
-            ],
-          })
-          .then(() => {
-            console.log("63: ", { title, activeUrl, favIconUrl });
-
-            window.close();
-          })
-          .catch(console.error);
+      .create({ title: "_SUPER_BOARD" })
+      .then((node) => {
+        const titleWithTags = ":SB:" + title + ":SB:" + tags.join(",");
+        chrome.bookmarks.create({
+          parentId: node.id,
+          title: titleWithTags,
+          url: activeUrl,
+        });
       })
       .catch(console.error);
+
+    // chrome.storage.local
+    //   .get(["sites"])
+    //   .then((localData) => {
+    //     let previousSites = [];
+    //     if (localData.sites) {
+    //       previousSites = localData.sites;
+    //     }
+    //     chrome.storage.local
+    //       .set({
+    //         sites: [
+    //           ...previousSites,
+    //           {
+    //             createAt: Date.now(),
+    //             title,
+    //             activeUrl: btoa(activeUrl!),
+    //             favIconUrl,
+    //           },
+    //         ],
+    //       })
+    //       .then(() => {
+    //         console.log("63: ", { title, activeUrl, favIconUrl });
+
+    //         // window.close();
+    //       })
+    //       .catch(console.error);
+    //   })
+    //   .catch(console.error);
   };
 
   const changeTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     if (value && value.length > 0) {
       setTitle(value);
-    }
-  };
-
-  const changeDescriptionInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value && value.length > 0) {
-      // setDescription(value);
     }
   };
 
