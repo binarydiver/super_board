@@ -16,6 +16,8 @@ const Popup = () => {
       .then((tabs) => {
         const { url: activeUrl, title, favIconUrl } = tabs[0];
 
+        console.log("19: ", { activeUrl, title, favIconUrl });
+
         if (favIconUrl) {
           setFaviconUrl(favIconUrl);
         }
@@ -25,7 +27,18 @@ const Popup = () => {
 
           chrome.bookmarks.create({ title: "_SUPER_BOARD" }).then((node) => {
             chrome.bookmarks.search({ url: activeUrl }, (results) => {
+              console.log("30: ", results);
+
               if (results.length === 0) {
+                if (title) {
+                  setTitle(title);
+                }
+              }
+
+              const bookmarkIndexFromSuperBoard = results.findIndex((node) =>
+                node.title.startsWith(":SB:")
+              );
+              if (bookmarkIndexFromSuperBoard === -1) {
                 if (title) {
                   setTitle(title);
                 }
@@ -35,8 +48,8 @@ const Popup = () => {
                 if (result.title.startsWith(":SB:")) {
                   const titleComponents = result.title.split(":SB:");
                   setTitle(titleComponents[1]);
-                  if (titleComponents[2]) {
-                    setTags(titleComponents[2].split(","));
+                  if (titleComponents[3]) {
+                    setTags(titleComponents[3].split(","));
                   }
                 }
               });
@@ -51,7 +64,8 @@ const Popup = () => {
     chrome.bookmarks
       .create({ title: "_SUPER_BOARD" })
       .then((node) => {
-        const titleWithTags = ":SB:" + title + ":SB:" + tags.join(",");
+        const titleWithTags =
+          ":SB:" + title + ":SB:" + Date.now() + ":SB:" + tags.join(",");
         chrome.bookmarks.create({
           parentId: node.id,
           title: titleWithTags,
@@ -59,34 +73,6 @@ const Popup = () => {
         });
       })
       .catch(console.error);
-
-    // chrome.storage.local
-    //   .get(["sites"])
-    //   .then((localData) => {
-    //     let previousSites = [];
-    //     if (localData.sites) {
-    //       previousSites = localData.sites;
-    //     }
-    //     chrome.storage.local
-    //       .set({
-    //         sites: [
-    //           ...previousSites,
-    //           {
-    //             createAt: Date.now(),
-    //             title,
-    //             activeUrl: btoa(activeUrl!),
-    //             favIconUrl,
-    //           },
-    //         ],
-    //       })
-    //       .then(() => {
-    //         console.log("63: ", { title, activeUrl, favIconUrl });
-
-    //         // window.close();
-    //       })
-    //       .catch(console.error);
-    //   })
-    //   .catch(console.error);
   };
 
   const changeTitleInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +83,7 @@ const Popup = () => {
   };
 
   const finishEditing = (tag: string) => {
-    console.log("114: ", tags);
+    console.log("72: ", tags);
     setTags([...tags, tag]);
   };
 
